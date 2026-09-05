@@ -1,4 +1,4 @@
-# Yallakora Match Finder
+# MatchDay
 
 A small local web interface for the yallakora.com scraper.
 
