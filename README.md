@@ -5,7 +5,13 @@ A small local web interface for the yallakora.com scraper.
 ## Run it
 
 ```bash
+py -m venv .venv
+
+.venv\Scripts\activate.bat
+
 pip install -r requirements.txt
+
+
 python app.py
 ```
 
