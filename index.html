@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Match Finder</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="scoreboard">
+      <h1>Match Finder</h1>
+      <p class="subhead">Pick a date to pull every fixture, score, and status from the matches center.</p>
+
+      <form action="/scrape" method="post">
+        <input type="date" name="date" value="{{ date_str }}" required aria-label="Match date">
+        <button type="submit">Get matches</button>
+      </form>
+
+      {% if error %}
+      <div class="error">{{ error }}</div>
+      {% endif %}
+
+      {% if searched %}
+      {% if grouped %}
+      <div class="results">
+        <div class="results-header">
+          <h2>{{ display_date }}</h2>
+          <a class="download-link" href="/download">Download CSV</a>
+        </div>
+
+        {% for champ, matches in grouped.items() %}
+        <div class="championship">
+          <h3>{{ champ }}</h3>
+          {% for m in matches %}
+          <div class="match-row">
+            <div class="team team-a">{{ m.team_a or "—" }}</div>
+            <div class="score-block">
+              <div class="score">{{ m.score }}</div>
+              <div class="meta">
+                {{ m.status or m.time or "" }}{% if m.round %} · {{ m.round }}{% endif %}
+              </div>
+            </div>
+            <div class="team team-b">{{ m.team_b or "—" }}</div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="empty">No matches found for {{ display_date }}.</div>
+      {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</body>
+
+</html>
